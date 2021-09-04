@@ -11,14 +11,14 @@ if not sys.warnoptions:
 
 
 NB_ITERATIONS = 10  # Nombre d'itérations
-NB_QUERY = 20  # Nombre des etiquetes par itération
+NB_QUERY = 10  # Nombre des etiquetes par itération
 
 
 if __name__ == '__main__':
     logging.getLogger('small_text').setLevel(logging.ERROR)
     logging.getLogger('sklearn').setLevel(logging.ERROR)
     print(f"Nombre d'itérations : {NB_ITERATIONS}")
-    print(f"Nombre de query : {NB_QUERY}\n")
+    print(f"Nombre des etiquetes par itération : {NB_QUERY}")
 
     text_train, text_test = get_train_test()
     train, test = preprocess_data(text_train, text_test)
