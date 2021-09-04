@@ -154,7 +154,7 @@ def apply_DecisionTree(train, test, NB_ITERATIONS, NB_QUERY):
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_active_learning(active_learner=active_learner, train=train,
-                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERYt)
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
     random_accuracys.append(round(max(acc), 3))
     print(f'\tStrategy: Random Sampling\t {round(max(acc), 3)}')
 
@@ -162,7 +162,7 @@ def apply_DecisionTree(train, test, NB_ITERATIONS, NB_QUERY):
         clf_factory, LeastConfidence(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_active_learning(active_learner=active_learner, train=train,
-                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERYt)
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
     least_accuracys.append(round(max(acc), 3))
     print(f'\tStrategy: Least Confidence\t {round(max(acc), 3)}')
 
