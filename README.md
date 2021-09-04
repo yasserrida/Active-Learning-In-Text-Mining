@@ -1,6 +1,6 @@
 # Active Learning In Text Mining
 
-This project is a Python implentation of Active Learning In Text Mining
+This project is a Python implementation of Active Learning In Text Mining
 
 ## Author: RIDA Yasser
 
