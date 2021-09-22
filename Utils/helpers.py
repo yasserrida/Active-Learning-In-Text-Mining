@@ -1,9 +1,10 @@
+from main import NB_QUERY
 import matplotlib.pyplot as plt
 import numpy as np
 from texttable import Texttable
 
 from small_text.active_learner import PoolBasedActiveLearner
-from small_text.query_strategies import RandomSampling, LeastConfidence, PredictionEntropy
+from small_text.query_strategies import RandomSampling, LeastConfidence, PredictionEntropy,  BreakingTies
 from small_text.classifiers import ConfidenceEnhancedLinearSVC
 from small_text.classifiers.factories import SklearnClassifierFactory
 
@@ -17,11 +18,12 @@ from sklearn.neural_network import MLPClassifier
 random_accuracys = ['Random Sampling']
 least_accuracys = ['Least Confidence']
 entory_accuracys = ['Entropy']
-accuracys = ['Without Active']
+margin_accuracys = ['Margin Sampling']
+accuracys = ['without AL']
 clf_templates = ["Strategy / Classifier", "Linear SVC", "K Neighbors",
                  "Decision Tree", "Random Forest", "AdaBoost", "MLP"]
-query_strategys = ["RandomSampling", "LeastConfidence",
-                   "PredictionEntropy"]
+query_strategys = ["Random Sampling", "Least Confidence",
+                   "Entropy", "Margin Sampling"]
 colors = ['blue', 'red', 'green', 'pink', 'black', 'orange']
 
 
@@ -97,12 +99,20 @@ def apply_ConfidenceEnhancedLinearSVC(train, test, NB_ITERATIONS, NB_QUERY):
     print(f'\tStrategy: Entropy\t\t {round(max(acc),3)}')
 
     active_learner = PoolBasedActiveLearner(
+        clf_factory,  BreakingTies(), train)
+    labeled_indices = initialize_active_learner(active_learner, train.y)
+    acc = perform_active_learning(active_learner=active_learner, train=train,
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
+    margin_accuracys.append(round(max(acc), 3))
+    print(f'\tStrategy: Margin Sampling\t {round(max(acc),3)}')
+
+    active_learner = PoolBasedActiveLearner(
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_learning(active_learner=active_learner, train=train,
                            labeled_indices=labeled_indices, test=test)
     accuracys.append(round(max(acc), 3))
-    print(f'\tStrategy: without Active\t {round(max(acc),3)}')
+    print(f'\tStrategy: without AL\t {round(max(acc),3)}')
 
 
 # -- Appliquer l'apprentissage actif avec le classificateur KNeighbors
@@ -136,12 +146,20 @@ def apply_KNeighbors(train, test, NB_ITERATIONS, NB_QUERY):
     print(f'\tStrategy: Entropy\t\t {round(max(acc),3)}')
 
     active_learner = PoolBasedActiveLearner(
+        clf_factory,  BreakingTies(), train)
+    labeled_indices = initialize_active_learner(active_learner, train.y)
+    acc = perform_active_learning(active_learner=active_learner, train=train,
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
+    margin_accuracys.append(round(max(acc), 3))
+    print(f'\tStrategy: Margin Sampling\t {round(max(acc),3)}')
+
+    active_learner = PoolBasedActiveLearner(
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_learning(active_learner=active_learner, train=train,
                            labeled_indices=labeled_indices, test=test)
     accuracys.append(round(max(acc), 3))
-    print(f'\tStrategy: without Active\t {round(max(acc),3)}')
+    print(f'\tStrategy: without AL\t {round(max(acc),3)}')
 
 
 # -- Appliquer l'apprentissage actif avec le classificateur DecisionTree
@@ -175,12 +193,20 @@ def apply_DecisionTree(train, test, NB_ITERATIONS, NB_QUERY):
     print(f'\tStrategy: Entropy\t\t {round(max(acc), 3)}')
 
     active_learner = PoolBasedActiveLearner(
+        clf_factory,  BreakingTies(), train)
+    labeled_indices = initialize_active_learner(active_learner, train.y)
+    acc = perform_active_learning(active_learner=active_learner, train=train,
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
+    margin_accuracys.append(round(max(acc), 3))
+    print(f'\tStrategy: Margin Sampling\t {round(max(acc),3)}')
+
+    active_learner = PoolBasedActiveLearner(
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_learning(active_learner=active_learner, train=train,
                            labeled_indices=labeled_indices, test=test)
     accuracys.append(round(max(acc), 3))
-    print(f'\tStrategy: without Active\t {round(max(acc),3)}')
+    print(f'\tStrategy: without AL\t {round(max(acc),3)}')
 
 
 # -- Appliquer l'apprentissage actif avec le classificateur RandomForest
@@ -214,12 +240,20 @@ def apply_RandomForest(train, test, NB_ITERATIONS, NB_QUERY):
     print(f'\tStrategy: Entropy\t\t {round(max(acc), 3)}')
 
     active_learner = PoolBasedActiveLearner(
+        clf_factory,  BreakingTies(), train)
+    labeled_indices = initialize_active_learner(active_learner, train.y)
+    acc = perform_active_learning(active_learner=active_learner, train=train,
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
+    margin_accuracys.append(round(max(acc), 3))
+    print(f'\tStrategy: Margin Sampling\t {round(max(acc),3)}')
+
+    active_learner = PoolBasedActiveLearner(
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_learning(active_learner=active_learner, train=train,
                            labeled_indices=labeled_indices, test=test)
     accuracys.append(round(max(acc), 3))
-    print(f'\tStrategy: without Active\t {round(max(acc),3)}')
+    print(f'\tStrategy: without AL\t {round(max(acc),3)}')
 
 
 # -- Appliquer l'apprentissage actif avec le classificateur AdaBoost
@@ -253,12 +287,20 @@ def apply_AdaBoost(train, test, NB_ITERATIONS, NB_QUERY):
     print(f'\tStrategy: Entropy\t\t {round(max(acc), 3)}')
 
     active_learner = PoolBasedActiveLearner(
+        clf_factory,  BreakingTies(), train)
+    labeled_indices = initialize_active_learner(active_learner, train.y)
+    acc = perform_active_learning(active_learner=active_learner, train=train,
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
+    margin_accuracys.append(round(max(acc), 3))
+    print(f'\tStrategy: Margin Sampling\t {round(max(acc),3)}')
+
+    active_learner = PoolBasedActiveLearner(
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_learning(active_learner=active_learner, train=train,
                            labeled_indices=labeled_indices, test=test)
     accuracys.append(round(max(acc), 3))
-    print(f'\tStrategy: without Active\t {round(max(acc),3)}')
+    print(f'\tStrategy: without AL\t {round(max(acc),3)}')
 
 
 # -- Appliquer l'apprentissage actif avec le classificateur MLP
@@ -292,12 +334,20 @@ def apply_MLP(train, test, NB_ITERATIONS, NB_QUERY):
     print(f'\tStrategy: Entropy\t\t {round(max(acc), 3)}')
 
     active_learner = PoolBasedActiveLearner(
+        clf_factory,  BreakingTies(), train)
+    labeled_indices = initialize_active_learner(active_learner, train.y)
+    acc = perform_active_learning(active_learner=active_learner, train=train,
+                                  labeled_indices=labeled_indices, test=test, NB_ITERATIONS=NB_ITERATIONS, NB_QUERY=NB_QUERY)
+    margin_accuracys.append(round(max(acc), 3))
+    print(f'\tStrategy: Margin Sampling\t {round(max(acc),3)}')
+
+    active_learner = PoolBasedActiveLearner(
         clf_factory, PredictionEntropy(), train)
     labeled_indices = initialize_active_learner(active_learner, train.y)
     acc = perform_learning(active_learner=active_learner, train=train,
                            labeled_indices=labeled_indices, test=test)
     accuracys.append(round(max(acc), 3))
-    print(f'\tStrategy: without Active\t {round(max(acc),3)}')
+    print(f'\tStrategy: without AL\t {round(max(acc),3)}')
 
 
 # -- Rendre la matrice des scores
@@ -307,6 +357,7 @@ def t_table():
                      random_accuracys,
                      least_accuracys,
                      entory_accuracys,
+                     margin_accuracys,
                      accuracys])
     print(t.draw())
 
@@ -320,10 +371,14 @@ def plot(NB_ITERATIONS):
              label="Random", linestyle='-', marker='o')
     plt.plot(x, least_accuracys[1:], color=colors[1], alpha=0.6,
              label='Least Conf', linestyle='-', marker='o')
-    plt.plot(x, entory_accuracys[1:], color=colors[1], alpha=0.6,
+    plt.plot(x, entory_accuracys[1:], color=colors[2], alpha=0.6,
              label='Entropy', linestyle='-', marker='o')
-    plt.title('Comparaison entre les différents stratégies | ' +
-              str(NB_ITERATIONS) + ' itération')
+    plt.plot(x, margin_accuracys[1:], color=colors[3], alpha=0.6,
+             label='Margin', linestyle='-', marker='o')
+    plt.plot(x, accuracys[1:], color=colors[4], alpha=0.6,
+             label='Without AL', linestyle='-', marker='o')
+    plt.title(str(NB_ITERATIONS) + ' itération | ' +
+              str(NB_QUERY) + ' label par itération')
     plt.grid()
     plt.legend()
     plt.show()
