@@ -20,6 +20,7 @@ least_accuracys = ['Least Confidence']
 entory_accuracys = ['Entropy']
 margin_accuracys = ['Margin Sampling']
 accuracys = ['without AL']
+accuracys = ['Without Active']
 clf_templates = ["Strategy / Classifier", "Linear SVC", "K Neighbors",
                  "Decision Tree", "Random Forest", "AdaBoost", "MLP"]
 query_strategys = ["Random Sampling", "Least Confidence",
